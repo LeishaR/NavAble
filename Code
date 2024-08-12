@@ -1,0 +1,176 @@
+import shutil
+import pyttsx3
+import speech_recognition as sr
+import datetime
+import webbrowser
+import os
+
+
+engine = pyttsx3.init('sapi5')
+voices = engine.getProperty('voices')
+engine.setProperty('voice', voices[0].id)
+
+def speak(audio):
+    engine.say(audio)
+    engine.runAndWait()
+
+
+def wishMe():
+    hour = int(datetime.datetime.now().hour)
+    if hour >= 0 and hour < 12:
+        speak("Good Morning !")
+
+    elif hour >= 12 and hour < 18:
+        speak("Good Afternoon !")
+
+    else:
+        speak("Good Evening !")
+
+    assname = ("Jarvis 1 point o")
+    speak("I am your Assistant")
+    speak(assname)
+
+
+def username():
+    speak("What should i call you ")
+    uname = takeCommand()
+    speak("Welcome ")
+    speak(uname)
+    columns = shutil.get_terminal_size().columns
+
+    print("#####################".center(columns))
+    print("Welcome ", uname.center(columns))
+    print("#####################".center(columns))
+
+    speak("How can i Help you ")
+
+
+def takeCommand():
+    r = sr.Recognizer()
+
+    with sr.Microphone() as source:
+        r.adjust_for_ambient_noise(source, duration=0.5)
+        print("Listening...")
+        r.pause_threshold = 0.5
+        audio = r.listen(source)
+
+    try:
+        print("Recognizing...")
+        query = r.recognize_google(audio, language='en-in')
+        print(f"User said: {query}\n")
+
+    except Exception as e:
+        print(e)
+        print("Unable to Recognize your voice.")
+        return "None"
+
+    return query
+
+import requests
+
+res = requests.get('https://ipinfo.io/')
+data = res.json()
+
+location = data['loc'].split(',')
+latitude = location[0]
+longitude = location[1]
+
+print("Latitude : ", latitude)
+print("Longitude : ", longitude)
+
+
+
+if __name__ == '__main__':
+    clear = lambda: os.system('cls')
+
+    # This Function will clean any
+    # command before execution of this python file
+    clear()
+    wishMe()
+    username()
+
+    while True:
+
+        query = takeCommand().lower()
+
+        # All the commands said by user will be
+        # stored here in 'query' and will be
+        # converted to lower case for easily
+        # recognition of command
+        if "main gate to entrance" in query and latitude == str(12.9719):
+            speak("start from 6 steps to your left")
+            speak("then walk 16 steps forward")
+            speak("and two stairs down")
+
+        elif "entrance to ticket counter" in query:
+            speak("turn right and walk 10 steps forward ")
+
+        elif "entrance to main gate" in query and latitude == str(12.9719):
+            speak("walk 16 steps forward")
+            speak("and climb two stairs")
+
+        elif "ticket counter to entrance" in query:
+            speak("walk 8 steps forward and turn to your left")
+
+        elif "entrance to ticket kiosk" in query or "entrance to vending machine" in query:
+            speak("walk 11 steps forward")
+
+        elif "ticket kiosk to platform" in query or "vending machine to platform" in query:
+            speak("climb down two steps")
+            speak("walk 8 steps ahead")
+            speak("go down 6 more stairs")
+            speak("walk 9 steps forward")
+
+        elif "first kiosk to second kiosk" in query or "first vending machine to second vending machine" in query:
+            speak("go down two stairs")
+            speak("walk 8 steps forward")
+            speak("the kiosk is to your left")
+
+        elif "second kiosk to seats" in query or "second vending machine to seats":
+            speak("walk 5 steps forward")
+            speak("go down 6 stairs")
+            speak("walk 1 meter forward")
+
+        elif "ramp" in query:
+            speak("begin from the first kiosk or vending machine")
+            speak("walk down 3 steps on the staircase")
+            speak("walk 9 steps forward")
+            speak("walk down the ramp for 14 steps forward")
+
+        elif "water" in query or "water dispenser" in query:
+            speak("walk down six stairs after the second kiosk")
+            speak("walk 8 steps forward")
+            speak("or walk to your left after exiting the ramp")
+            speak("walk 44 steps forward")
+
+        elif "trash" in query:
+            speak("To your left at the entrance")
+
+        elif "ticket counter to platform" in query:
+            speak("walk 19 steps forward")
+            speak("walk down two stairs and 8 steps forward")
+            speak("walk 9 steps forward")
+            speak("walk down six stairs")
+            speak("turn to your left and walk 8 steps forward")
+
+        elif 'exit' in query:
+            speak("Thanks for giving me your time")
+            exit()
+
+        elif "where is" in query:
+            query = query.replace("where is", "")
+            location = query
+            speak("User asked to Locate")
+            speak(location)
+            webbrowser.open("https://www.google.nl / maps / place/" + location + "")
+
+
+        # NPPR9-FWDCX-D2C8J-H872K-2YT43
+        elif "jarvis" in query:
+
+            wishMe()
+            speak("Jarvis 1 point o in your service")
+
+        elif "Good Morning" in query:
+            speak("A warm" + query)
+            speak("How are you ")
