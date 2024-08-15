@@ -1,4 +1,4 @@
-# NavAble
+# Voice Based Navigation System for the Visually Impaired
 We often take for granted the little privileges we don’t realise aren’t available to everyone.
 As a sighted person, navigation comes easy. Most public spaces have ample signs and
 instructions that can be used to find the route to go to our destination. However, such
